@@ -1,0 +1,58 @@
+openapi: '3.0.2'
+info:
+  title: Users application
+  version: '1.0'
+paths:
+  /user/{userId}:
+    get:
+      summary: Get a user by ID
+      description: Calls https://jsonplaceholder.typicode.com/users/{userid} and returns the result as described below
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID.
+        name:
+          type: string
+          description: The user name.
+        email:
+          type: string
+          description: The user name.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        retryable:
+          type: boolean
+          description: Should the call be retried
